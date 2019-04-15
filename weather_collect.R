@@ -74,11 +74,11 @@ for (yr in years) {
     
     # parse xml and collect data
     x <- try(xmlParse(response), silent = TRUE)
+    rm(response)
     if (inherits(x, "try-error")) {
       cat("fail\n")
       message(x[1])
     } else {
-      rm(response)
       xr <- xmlRoot(x)
       xl <- xmlToList(xr)
       cat(xl$msg, "\n")
