@@ -1,0 +1,20 @@
+# Set value of each argument in the form
+#   <arg> = <value>
+#
+# @arguments
+# 1. stn_id     : station ID.
+# 2. start_year : year of the starting day.
+# 3. end_year   : year of the ending day.
+# 4. date_cd    : "HR" if hourly, "DAY" if daily.
+# 5. outfile    : destination file.
+#
+# @cautions
+# `outfile` must be a CSV file.
+# value of arguments `date_cd` and `outfile` must be
+#   wrapped with quotation marks.
+#
+stn_id = 232
+start_year = 2009
+end_year = 2018
+date_cd = "HR"
+outfile = "weather_hourly.csv"
