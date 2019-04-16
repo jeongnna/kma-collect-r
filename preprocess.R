@@ -45,7 +45,17 @@ date_set <- tibble(date = as_date("2009-01-01") + c(0, seq_len(period_len)))
 
 infile %>% 
   read_csv() %>% 
-  select(STN_ID, TM, MAX_TA, MIN_TA, AVG_WS, AVG_TCA, AVG_TD) %>% 
+  select(
+    STN_ID,     # 지점번호
+    TM,         # 시간
+    MAX_TA,     # 최고기온
+    MIN_TA,     # 최저기온
+    AVG_WS,     # 평균풍속
+    AVG_TCA,    # 평균전운량
+    AVG_TD,     # 평균이슬점온도
+    SUM_GSR,    # 합계일사량
+    SUM_LRG_EV  # 합계대형증발량
+  ) %>% 
   right_join(date_set, by = c("TM" = "date")) %>% 
   mutate_at(vars(-c("STN_ID", "TM")), na_interpolate) %>% 
   write_csv(outfile)
@@ -59,7 +69,16 @@ time_set <- tibble(time = ymd_h("2009-01-01 00") + hours(1) * c(0, seq_len(perio
 
 infile %>% 
   read_csv() %>% 
-  select(STN_ID, TM, RN, TA, WS, TD, DC10_TCA) %>% 
+  select(
+    STN_ID,   # 지점번호
+    TM,       # 시간
+    RN,       # 강수량
+    TA,       # 기온
+    WS,       # 풍속
+    ICSR,     # 일사량
+    TD,       # 이슬점온도
+    DC10_TCA  # 전운량
+  ) %>% 
   right_join(time_set, by = c("TM" = "time")) %>% 
   mutate_at("RN", na_zero) %>% 
   mutate_at(vars(-c("STN_ID", "TM", "RN")), na_interpolate) %>% 
