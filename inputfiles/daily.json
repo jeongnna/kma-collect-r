@@ -1,0 +1,23 @@
+{
+    "collect" : {
+        "stn_id" : 131,
+        "start_year" : 2009,
+        "end_year" : 2018,
+        "date_cd" : "DAY"
+    },
+    
+    "path" : {
+        "raw"       : "data/weather_daily.csv",
+        "processed" : "data/weather_daily_pp.csv"
+    },
+    
+    "features" : {
+        "MAX_TA"     : "interpolate",
+        "MIN_TA"     : "interpolate",
+        "AVG_WS"     : "interpolate",
+        "AVG_TCA"    : "interpolate",
+        "AVG_TD"     : "interpolate",
+        "SUM_GSR"    : "interpolate",
+        "SUM_LRG_EV" : "interpolate"
+    }
+}

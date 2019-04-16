@@ -1,0 +1,22 @@
+{
+    "collect" : {
+        "stn_id" : 131,
+        "start_year" : 2009,
+        "end_year" : 2018,
+        "date_cd" : "HR"
+    },
+    
+    "path" : {
+        "raw"       : "data/weather_hourly.csv",
+        "processed" : "data/weather_hourly_pp.csv"
+    },
+    
+    "features" : {
+        "RN"        : "zero",
+        "TA"        : "interpolate",
+        "WS"        : "interpolate",
+        "ICSR"      : "interpolate",
+        "TD"        : "interpolate",
+        "DC10_TCA"  : "interpolate"
+    }
+}

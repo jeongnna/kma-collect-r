@@ -1,5 +1,6 @@
 #!/bin/sh
 mkdir data/
-Rscript weather_collect.R infile_daily
-Rscript weather_collect.R infile_hourly
-Rscript preprocess.R
+Rscript src/weather_collect.R inputfiles/daily.json
+Rscript src/preprocess.R inputfiles/daily.json
+Rscript src/weather_collect.R inputfiles/hourly.json
+Rscript src/preprocess.R inputfiles/hourly.json

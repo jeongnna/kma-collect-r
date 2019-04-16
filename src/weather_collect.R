@@ -1,5 +1,6 @@
 library(tidyverse)
 library(lubridate)
+library(rjson)
 library(httr)
 library(XML)
 
@@ -7,23 +8,22 @@ library(XML)
 # Arguments ---------------------------------------------------------------
 
 cmdargs <- commandArgs(TRUE)
-infile <- cmdargs[1]
+args <- fromJSON(file = cmdargs[1])
 
-args <- 
-  read_lines(infile) %>% 
-  str_trim() %>% 
-  str_subset("^[^#]")
-eval(parse(text = args))
-outfile <- str_c("data/", outfile)
+stn_id <- args$collect$stn_id
+start_year <- args$collect$start_year
+end_year <- args$collect$end_year
+date_cd <- args$collect$date_cd
+outfile <- args$path$raw
 
 key <- read_lines("api_key")
 
 
 # Preparation -------------------------------------------------------------
 
-end_of_month <- c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
-
 set_config(config(ssl_verifypeer = 0L))
+
+end_of_month <- c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
 set_url <- function(start_date, end_date, stn_id, key, date_cd) {
   if (!all(is.Date(start_date), is.Date(end_date))) {
@@ -51,10 +51,10 @@ set_url <- function(start_date, end_date, stn_id, key, date_cd) {
 }
 
 
-# Collect data ------------------------------------------------------------
+# Process -----------------------------------------------------------------
 
 # collect
-weather <- NULL
+df <- NULL
 years <- start_year:end_year
 for (yr in years) {
   cat("year", yr, "\n")
@@ -83,7 +83,7 @@ for (yr in years) {
       xl <- xmlToList(xr)
       cat(xl$msg, "\n")
       tmp_df <- bind_rows(xl[names(xl) == "info"])
-      weather <- bind_rows(weather, tmp_df)
+      df <- bind_rows(df, tmp_df)
       
       # check date
       if (any(year(tmp_df$TM) != yr)) {
@@ -105,7 +105,6 @@ for (yr in years) {
     }
   }
 }
-rm(x, xr, xl)
 
 # correct data types
 if (date_cd == "HR") {
@@ -115,15 +114,15 @@ if (date_cd == "HR") {
   not_numeric <- c("TM", "STN_NM", "ISCS")
   time_conversion <- ymd
 }
-weather <- 
-  weather %>% 
+df <- df %>% 
   mutate_at("TM", time_conversion) %>% 
   mutate_at(vars(-not_numeric), as.numeric)
 
 
 # Save file ---------------------------------------------------------------
 
+message("Saving colleted data")
 if (file.exists(outfile)) {
   warning("Destination file is already exists. It replaced with new file.")
 }
-write_csv(weather, outfile)
+write_csv(df, outfile)
