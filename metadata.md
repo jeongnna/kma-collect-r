@@ -14,20 +14,20 @@
     LCS_CH       : 최저 운고
     CLFM_ABBR_CD : 운형
     DC10_LMCS_CA : 중하층운량
-    DC10_TCA     : 전운량
+    DC10_TCA     : 전운량 (10분위)
     HR3_FHSC     : 3시간신적설
     DSNW         : 적설
-    ICSR         : 일사
+    ICSR         : 일사 (MJ/m2)
     SS           : 일조
     PS           : 해면기압
     PA           : 현지기압
-    TD           : 이슬점온도
+    TD           : 이슬점온도 (°C)
     PV           : 증기압
     HM           : 습도
     WD           : 풍향
-    WS           : 풍속
-    RN           : 강수량
-    TA           : 기온
+    WS           : 풍속 (m/s)
+    RN           : 강수량 (mm)
+    TA           : 기온 (°C)
 
 ## Daily data
 
@@ -54,16 +54,16 @@
     MIN_TG            : 최저 초상온도
     MAX_WS_WD         : 최대 풍속 풍향
     SUM_SML_EV        : 합계 소형증발량
-    AVG_TCA           : 평균 전운량
+    AVG_TCA           : 평균 전운량 (10분위)
     HR1_MAX_ICSR      : 1시간 최다 일사량
-    AVG_TD            : 평균 이슬점온도
+    AVG_TD            : 평균 이슬점온도 (°C)
     MAX_PS            : 최고 해면기압
     AVG_CM20_TE       : 평균 20cm 지중온도
     DD_MES            : 일 최심적설
-    MIN_TA            : 최저 기온
+    MIN_TA            : 최저 기온 (°C)
     MIN_PS_HRMT       : 최저 해면기압 시각
     AVG_M5_0_TE       : 5.0m 지중온도
-    MAX_TA            : 최고 기온
+    MAX_TA            : 최고 기온 (°C)
     HR24_SUM_RWS      : 풍정합
     AVG_M3_0_TE       : 3.0m 지중온도
     AVG_CM10_TE       : 평균10cm 지중온도
@@ -73,7 +73,7 @@
     AVG_TCA           : 평균 중하층운량
     AVG_CM30_TE       : 평균 30cm 지중온도
     AVG_M1_0TE        : 1.0m 지중온도
-    SUM_GSR           : 합계 일사
+    SUM_GSR           : 합계 일사 (MJ/m2)
     MAX_WS_HRMT       : 최대 풍속 시각
     AVG_PA            : 평귝 현지기압
     AVG_WS            : 평균 풍속

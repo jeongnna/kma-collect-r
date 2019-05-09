@@ -29,11 +29,11 @@ set_url <- function(start_date, end_date, stn_id, key, date_cd) {
   if (!all(is.Date(start_date), is.Date(end_date))) {
     stop("`date` must be a Date object")
   }
-  
+
   n_dates <- as.integer(diff.Date(c(start_date, end_date))) + 1
   start_date <- format(start_date, "%Y%m%d")
   end_date <- format(end_date, "%Y%m%d")
-  
+
   str_c(
     "https://data.kma.go.kr/apiData/getData?",
     "type=xml",
@@ -51,27 +51,26 @@ set_url <- function(start_date, end_date, stn_id, key, date_cd) {
 }
 
 
-# Process -----------------------------------------------------------------
+# Collect -----------------------------------------------------------------
 
-# collect
 df <- NULL
 years <- start_year:end_year
 for (yr in years) {
   cat("year", yr, "\n")
   for (mn in 1:12) {
     cat("  month", mn)
-    
+
     # set dates
     st <- as_date(str_c(yr, mn, 1, sep = "-"))
     ed <- as_date(str_c(yr, mn, end_of_month[mn], sep = "-"))
     if (mn == 2) ed <- ed + leap_year(yr)
-    
+
     # send request
     url <- set_url(st, ed, stn_id, key, date_cd)
     cat(" sending request... ")
     response <- GET(url)
     Sys.sleep(1)
-    
+
     # parse xml and collect data
     x <- try(xmlParse(response), silent = TRUE)
     rm(response)
@@ -84,7 +83,7 @@ for (yr in years) {
       cat(xl$msg, "\n")
       tmp_df <- bind_rows(xl[names(xl) == "info"])
       df <- bind_rows(df, tmp_df)
-      
+
       # check date
       if (any(year(tmp_df$TM) != yr)) {
         message("Warning: inconsistent year detected.")
@@ -92,15 +91,15 @@ for (yr in years) {
       if (any(month(tmp_df$TM) != mn)) {
         message("Warning: inconsistent month detected.")
       }
-      
+
       # check number of rows
       n_dates <- as.integer(diff.Date(c(st, ed))) + 1
       n_expect <- n_dates * ifelse(date_cd == "HR", 24, 1)
-      n_rows <- nrow(tmp_df)
-      if (n_expect != n_rows) {
+      n_collected <- nrow(tmp_df)
+      if (n_expect != n_collected) {
         message("Warning: Number of rows does not match with the expected.")
-        message("expected : ", n_expect)
-        message("actual   : ", n_rows)
+        message("expected  : ", n_expect)
+        message("collected : ", n_collected)
       }
     }
   }
@@ -114,8 +113,8 @@ if (date_cd == "HR") {
   not_numeric <- c("TM", "STN_NM", "ISCS")
   time_conversion <- ymd
 }
-df <- df %>% 
-  mutate_at("TM", time_conversion) %>% 
+df <- df %>%
+  mutate_at("TM", time_conversion) %>%
   mutate_at(vars(-not_numeric), as.numeric)
 
 
